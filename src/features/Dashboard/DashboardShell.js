@@ -6,13 +6,13 @@ import Main from "../../common/components/Main";
 import SummaryContainer from "./SummaryContainer";
 import Select from "../../common/components/Select";
 
-const DashboardShell = () => {
+const DashboardShell = ({ fetchDataset }) => {
   const [selectedLabel, setSelectedLabel] = useState("");
 
-  // NOTE: data fetching will be handled in the next milestone
   const handleSelectChange = event => {
-    const label = event.target.selectedOptions[0].label;
-    setSelectedLabel(label);
+    const selectedLabel = event.target.selectedOptions[0].label;
+    setSelectedLabel(selectedLabel);
+    fetchDataset(event.target.value);
   };
 
   const optionsForSelect = [

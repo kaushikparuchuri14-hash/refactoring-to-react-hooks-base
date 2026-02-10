@@ -1,8 +1,16 @@
-import React, { useContext } from "react";
-import { globalContext } from "../../App";
+import React from "react";
+import { useFetch } from "../../hooks/useFetch";
+import Loading from "../../common/components/Loading";
 
 const SummaryContainer = () => {
-  const { salesTotal, subscriptionsTotal } = useContext(globalContext);
+  const {
+    loading,
+    error,
+    data: { salesTotal, subscriptionsTotal } = {}
+  } = useFetch(`${process.env.REACT_APP_BASE_URL}/totals/`);
+
+  if (loading) return <Loading />;
+  if (error) return <p>Something went wrong: {error}</p>;
 
   return (
     <div className="summary flex flex-row">

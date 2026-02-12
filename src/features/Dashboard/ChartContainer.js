@@ -1,13 +1,16 @@
 import React, { useContext } from "react";
 import LineChart from "./LineChart";
 import PropTypes from "prop-types";
-import { globalContext } from "../../App";
+import { DataContext } from "../../context/DataContext";
 
 const ChartContainer = ({ selectedLabel }) => {
-  const { data } = useContext(globalContext);
+  const { data: dataset } = useContext(DataContext);
 
-  const chartLabels = data.map(dataPoint => dataPoint.timestamp);
-  const chartValues = data.map(dataPoint => dataPoint.amount);
+  // Ensure dataset is always an array
+  const safeDataset = Array.isArray(dataset) ? dataset : [];
+
+  const chartLabels = safeDataset.map((dataPoint) => dataPoint.timestamp);
+  const chartValues = safeDataset.map((dataPoint) => dataPoint.amount);
 
   return (
     <div>
@@ -21,7 +24,7 @@ const ChartContainer = ({ selectedLabel }) => {
 };
 
 ChartContainer.propTypes = {
-  selectedLabel: PropTypes.string.isRequired
+  selectedLabel: PropTypes.string.isRequired,
 };
 
 export default ChartContainer;

@@ -1,16 +1,14 @@
-import React from "react";
-import { useFetch } from "../../hooks/useFetch";
+import React, { useContext } from "react";
+import { DataContext } from "../../context/DataContext";
 import Loading from "../../common/components/Loading";
 
 const SummaryContainer = () => {
-  const {
-    loading,
-    error,
-    data: { salesTotal, subscriptionsTotal } = {}
-  } = useFetch(`${process.env.REACT_APP_BASE_URL}/totals/`);
+  const { loading, error, data } = useContext(DataContext);
 
   if (loading) return <Loading />;
   if (error) return <p>Something went wrong: {error}</p>;
+
+  const { salesTotal, subscriptionsTotal } = data || {};
 
   return (
     <div className="summary flex flex-row">
@@ -27,3 +25,4 @@ const SummaryContainer = () => {
 };
 
 export default SummaryContainer;
+

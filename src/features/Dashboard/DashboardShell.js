@@ -1,18 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Aside from "../../common/components/Aside";
 import ChartContainer from "./ChartContainer";
 import Layout from "../../common/components/Layout";
 import Main from "../../common/components/Main";
 import SummaryContainer from "./SummaryContainer";
 import Select from "../../common/components/Select";
+import { DataContext } from "../../context/DataContext";
 
-const DashboardShell = ({ fetchDataset }) => {
+const DashboardShell = () => {
   const [selectedLabel, setSelectedLabel] = useState("");
+  const { updateEndpoint } = useContext(DataContext);
 
   const handleSelectChange = event => {
     const selectedLabel = event.target.selectedOptions[0].label;
     setSelectedLabel(selectedLabel);
-    fetchDataset(event.target.value);
+    updateEndpoint(event.target.value);
   };
 
   const optionsForSelect = [

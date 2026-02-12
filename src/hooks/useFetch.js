@@ -9,13 +9,25 @@ const initialState = {
 function apiReducer(state, action) {
   switch (action.type) {
     case "FETCH_DATASET_START":
-      return { ...state, loading: true };
+      return {
+        ...state,
+        loading: true,
+        error: ""
+      };
 
     case "FETCH_DATASET_SUCCESS":
-      return { loading: false, error: "", data: action.payload };
+      return {
+        loading: false,
+        error: "",
+        data: action.payload
+      };
 
     case "FETCH_DATASET_ERROR":
-      return { loading: false, error: action.payload, data: [] };
+      return {
+        loading: false,
+        error: action.payload,
+        data: []
+      };
 
     default:
       return state;
@@ -26,7 +38,6 @@ export function useFetch(endpoint) {
   const [state, dispatch] = useReducer(apiReducer, initialState);
 
   useEffect(() => {
-    // do nothing if endpoint is empty
     if (!endpoint) return;
 
     dispatch({ type: "FETCH_DATASET_START" });

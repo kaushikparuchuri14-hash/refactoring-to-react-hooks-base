@@ -2,7 +2,7 @@ export let sales;
 export let subscriptions;
 
 if (process.env.NODE_ENV === "development") {
-  /* ONLY FOR DEVELOPMENT! DON'T IMPORT IN PRODUCTION */
+  /* ONLY FOR DEVELOPMENT! NOT FOR PRODUCTION */
   const Series = require("time-series-data-generator");
 
   const from = "2020-01-01T16:30:41Z";

@@ -3,7 +3,7 @@ import { useEffect, useReducer } from "react";
 const initialState = {
   loading: false,
   error: "",
-  data: []
+  data: [],
 };
 
 function apiReducer(state, action) {
@@ -12,21 +12,21 @@ function apiReducer(state, action) {
       return {
         ...state,
         loading: true,
-        error: ""
+        error: "",
       };
 
     case "FETCH_DATASET_SUCCESS":
       return {
         loading: false,
         error: "",
-        data: action.payload
+        data: action.payload,
       };
 
     case "FETCH_DATASET_ERROR":
       return {
         loading: false,
         error: action.payload,
-        data: []
+        data: [],
       };
 
     default:
@@ -43,22 +43,30 @@ export function useFetch(endpoint) {
     dispatch({ type: "FETCH_DATASET_START" });
 
     fetch(endpoint)
-      .then(response => {
+      .then((response) => {
         if (!response.ok) {
           throw Error(response.statusText);
         }
+
+        const contentType = response.headers.get("content-type");
+
+        if (!contentType || !contentType.includes("application/json")) {
+          throw Error("Response is not JSON");
+        }
+
         return response.json();
       })
-      .then(json => {
+
+      .then((json) => {
         dispatch({
           type: "FETCH_DATASET_SUCCESS",
-          payload: json
+          payload: json,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         dispatch({
           type: "FETCH_DATASET_ERROR",
-          payload: error.message
+          payload: error.message,
         });
       });
   }, [endpoint]);

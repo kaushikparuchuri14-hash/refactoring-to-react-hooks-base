@@ -6,7 +6,7 @@ import { DataContext } from "../../context/DataContext";
 const ChartContainer = ({ selectedLabel }) => {
   const { data: dataset } = useContext(DataContext);
 
-  // Ensure dataset is always an array
+  
   const safeDataset = Array.isArray(dataset) ? dataset : [];
 
   const chartLabels = safeDataset.map((dataPoint) => dataPoint.timestamp);

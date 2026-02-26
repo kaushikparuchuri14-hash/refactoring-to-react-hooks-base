@@ -1,3 +1,5 @@
+import { createServer } from "miragejs";
+
 export let sales;
 export let subscriptions;
 
@@ -17,10 +19,48 @@ if (process.env.NODE_ENV === "development") {
     decimalDigits: 0
   });
 
-  const subscriptionsSeries = new Series({ from, until, interval, keyName });
+  const subscriptionsSeries = new Series({
+    from,
+    until,
+    interval,
+    keyName
+  });
   subscriptions = subscriptionsSeries.gaussian({
     mean: 9,
     variance: 5,
     decimalDigits: 0
+  });
+}
+
+export function makeServer({ environment = "development" } = {}) {
+  return createServer({
+    environment,
+
+    routes() {
+      this.namespace = "api";
+
+      this.get("/totals", () => {
+        const salesTotal = sales
+          ? sales.reduce((sum, item) => sum + item.amount, 0)
+          : 0;
+
+        const subscriptionsTotal = subscriptions
+          ? subscriptions.reduce((sum, item) => sum + item.amount, 0)
+          : 0;
+
+        return {
+          salesTotal,
+          subscriptionsTotal
+        };
+      });
+
+      this.get("/sales", () => {
+        return sales || [];
+      });
+
+      this.get("/subscriptions", () => {
+        return subscriptions || [];
+      });
+    }
   });
 }
